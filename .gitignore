@@ -1,0 +1,7 @@
+# Игнорируемые файлы
+SpringStudyApp.iml
+
+# Игнорируемы папки
+.idea/
+lib/
+target/

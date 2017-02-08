@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+            http://java.sun.com/xml/ns/javaee
+            http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+  <display-name>spring-study-app</display-name>
+
+  <!--
+       Задает расположение основного файла настроек контекста приложения.
+       По умолчанию спринг ищет фаил конфигурации по пути: /WEB-INF/applicationContext.xml.
+       Все остальные файлы включаются в application-context.xml.
+  -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>WEB-INF/config/application-context.xml</param-value>
+  </context-param>
+
+  <!--
+        ContextLoadListener - это слушатель изменений в контексте.
+        То есть он обеспечивает загрузку файлов конфигурации.
+  -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <!--
+        Для чего нужен RequestContextListener.
+        Этот класс слушает создание и удаление запросов за пределами спринг контейнера.
+        То есть если в приложении используется вэб-контейнер Servlet 2.5, обрабатывающий запросы
+        за пределами DispatcherServlet-а, то необходимо зарегистрировать этот слушатель.
+  -->
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+
+  <!-- Собсвенно сервлет-диспетчер и маппинг -->
+  <servlet>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/config/application-context.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <!-- Вэб-сервер возращает вэлком-страницу автоматически если не указано (видимо в url-запросе) никакая страница -->
+  <welcome-file-list>
+    <welcome-file>/WEB-INF/view/index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/WEB-INF/view/error/errorpage.jsp</location>
+  </error-page>
+
+</web-app>
