@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Конфигурация бинов спринга для работы с excel и pdf файлами. -->
+
+    <!-- Когда контроллер возвращает excelDocument, то отрендорить молель при помощи класса ExcelDocument -->
+    <beans:bean id="excelDocument" class="ru.suprun.springstudyapp.mvc.excelpdf.ExcelDocument" />
+
+    <!-- Когда контроллер возвращает pdfDocument, то отрендорить модель при помощи класса PDFDocument -->
+    <beans:bean id="pdfDocument" class="ru.suprun.springstudyapp.mvc.excelpdf.PDFDocument" />
+
+</beans:beans>

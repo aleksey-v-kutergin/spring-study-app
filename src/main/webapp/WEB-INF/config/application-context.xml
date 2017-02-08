@@ -14,22 +14,4 @@
     <!-- Расположение статических ресурсов: css, js -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
-    <!-- ViewResolver - этот бин находить представление по его имени -->
-    <beans:bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <beans:property name="order" value="1" />
-        <beans:property name="prefix" value="/WEB_INF/view" />
-        <beans:property name="suffix" value=".jsp" />
-    </beans:bean>
-
-    <!--
-          view-controller - с помощью ресолвера представлений перенапраявляет пользователя на представление.
-          Например, для /about.html произойдет следующий поиск:
-          1. К префиксу добавится указанное имя представления: /WEB-INF/view/about/about
-          2. Добавится суффикс: /WEB-INF/view/about/about.jsp
-    -->
-    <mvc:view-controller path="/about.html" view-name="/about/about"/>
-    <mvc:view-controller path="/index.html" view-name="/index"/>
-
-    <beans:import resource="mvc-context.xml"/>
-
 </beans:beans>

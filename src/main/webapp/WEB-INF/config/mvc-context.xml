@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -10,12 +10,48 @@
 	   http://www.springframework.org/schema/context
 	   http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--
-          Во первых, говорим спрингу что для конфигурации бинов будут использованы аннотации
-          Во вторых, говорим спрингу не возвращать модель в случае редиректа.
-    -->
-    <mvc:annotation-driven ignore-default-model-on-redirect="true"></mvc:annotation-driven>
-
     <context:component-scan base-package="ru.suprun.springstudyapp.mvc"/>
 
-</beans>
+    <!--
+      Во первых, говорим спрингу что для конфигурации бинов будут использованы аннотации
+      Во вторых, говорим спрингу не возвращать модель в случае редиректа.
+    -->
+    <mvc:annotation-driven/>
+
+
+    <!-- ViewResolver - этот бин находить представление по его имени -->
+    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="order" value="1" />
+        <beans:property name="prefix" value="/WEB-INF/views/" />
+        <beans:property name="suffix" value=".jsp" />
+    </beans:bean>
+
+
+    <!-- Бин для работы с загрузкой файлов -->
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- Максимальный размер файла в байтах -->
+        <beans:property name="maxUploadSize" value="1000000"/>
+    </beans:bean>
+
+    <!-- Excel and PDF xml view configuration -->
+    <!--
+         В спринге бин XmlViewResolver используется для того чтобы найти бины-представления, описанные в xml, по их имени.
+     -->
+    <beans:bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <beans:property name="order" value="0" />
+        <beans:property name="location">
+            <beans:value>/WEB-INF/config/excel-pdf-context.xml</beans:value>
+        </beans:property>
+    </beans:bean>
+
+    <!--
+          view-controller - с помощью ресолвера представлений перенапраявляет пользователя на представление.
+          Например, для /about.html произойдет следующий поиск:
+          1. К префиксу добавится указанное имя представления: /WEB-INF/view/about/about
+          2. Добавится суффикс: /WEB-INF/view/about/about.jsp
+    -->
+    <mvc:view-controller path="/index.html" view-name="/index"/>
+    <mvc:view-controller path="/about.html" view-name="/about/about"/>
+    <mvc:view-controller path="/file.html" view-name="/file/file"/>
+
+</beans:beans>
