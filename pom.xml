@@ -67,6 +67,12 @@
       <artifactId>spring-jdbc</artifactId>
     </dependency>
 
+    <!-- Модуль спринга для работы с почтой: org.springframework.mail.java.mail -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+    </dependency>
+
     <!-- Servlet Web Dependencies -->
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -123,6 +129,19 @@
       <version>2.1.5</version>
     </dependency>
 
+    <!-- Дополнительные зависимости для работы с почтой -->
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4.7</version>
+    </dependency>
+
+    <!-- Процессор шаблонов -->
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.7</version>
+    </dependency>
 
 
 
