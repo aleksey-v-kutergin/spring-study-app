@@ -2,16 +2,35 @@
 <beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns:mvc="http://www.springframework.org/schema/mvc"
+             xmlns:jdbc="http://www.springframework.org/schema/jdbc"
              xmlns:context="http://www.springframework.org/schema/context"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc
 	   http://www.springframework.org/schema/mvc/spring-mvc.xsd
 	   http://www.springframework.org/schema/context
-	   http://www.springframework.org/schema/context/spring-context.xsd">
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/jdbc
+       http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+    <!-- Расположение файла пропертей, в котором описаны параметры подключения к БД -->
+    <!-- property-placeholder указывает где нужно искать файл пропертей  -->
+    <context:property-placeholder location="classpath:util.properties"/>
 
-    <!-- Расположение статических ресурсов: css, js -->
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <!-- Описание бина dataSource. Этот бин необходим для создания подключения к БД -->
+    <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <beans:property name="driverClassName" value="${jdbc.hsqldb.driverClass}" />
+        <beans:property name="url" value="${jdbc.hsqldb.url}" />
+        <beans:property name="username" value="${jdbc.hsqldb.username}" />
+        <beans:property name="password" value="${jdbc.hsqldb.password}" />
+    </beans:bean>
+
+    <!-- Инициализация втроекнной базы дынны при старте приложения. -->
+    <jdbc:initialize-database>
+        <!-- Создание схемы данных -->
+        <jdbc:script location="classpath:dbschema.sql"/>
+        <!-- Зполнение схемы тестовыми данными -->
+        <jdbc:script location="classpath:test-data.sql"/>
+    </jdbc:initialize-database>
 
 </beans:beans>

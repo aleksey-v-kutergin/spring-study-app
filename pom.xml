@@ -23,6 +23,14 @@
     <!-- Зависимости спринга -->
     <spring-framework.version>4.2.4.RELEASE</spring-framework.version>
 
+
+    <!-- Testing -->
+    <junit.version>4.12</junit.version>
+
+    <!-- Logging -->
+    <logback.version>1.0.13</logback.version>
+    <slf4j.version>1.7.13</slf4j.version>
+
   </properties>
 
   <!--
@@ -54,6 +62,11 @@
       <artifactId>spring-webmvc</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+    </dependency>
+
     <!-- Servlet Web Dependencies -->
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -73,6 +86,14 @@
       <artifactId>jsp-api</artifactId>
       <version>${jsp.version}</version>
       <scope>provided</scope>
+    </dependency>
+
+
+    <!-- Встроенная база данных HSQLDB -->
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.3.3</version>
     </dependency>
 
     <!-- Работа с файлами. Создание, загрузка и тд. -->
@@ -102,12 +123,33 @@
       <version>2.1.5</version>
     </dependency>
 
+
+
+
+
     <!-- Зависимости для тестирования -->
+
+    <!-- JUnit -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- Модуль спринга для тестирования компонентов MVC -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Logging with SLF4J and LogBack -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>compile</scope>
     </dependency>
 
   </dependencies>
@@ -136,6 +178,24 @@
       </plugin>
 
     </plugins>
+
+    <!--
+          Данное объявление нужно всаязи с особенностью тестирования спринг бинов.
+          Тесты при использовании модуля spring-test ищут файлы конфигурации контекста в classpath.
+          Короче говоря чтобы тесты увидели конфиги контекста по средстван аннотации:
+
+              @ContextConfiguration(locations = "classpath:/config/application-context.xml")
+
+          кофигурационные файлы должны раполагаться в: src/main/resources/.
+          Однако, это не айс так как надо либо дублировать настроки, либо прописаовать пути а-ля: file:/src/...
+
+          Здесь же, при сборке указывается что описанте контекста расположено в: src/main/webapp/WEB-INF/config.
+    -->
+    <testResources>
+      <testResource>
+        <directory>src/main/webapp/WEB-INF/config</directory>
+      </testResource>
+    </testResources>
 
   </build>
 

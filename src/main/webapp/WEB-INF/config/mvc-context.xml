@@ -12,10 +12,7 @@
 
     <context:component-scan base-package="ru.suprun.springstudyapp.mvc"/>
 
-    <!--
-      Во первых, говорим спрингу что для конфигурации бинов будут использованы аннотации
-      Во вторых, говорим спрингу не возвращать модель в случае редиректа.
-    -->
+    <!-- Говорим спрингу что для конфигурации бинов будут использованы аннотации -->
     <mvc:annotation-driven/>
 
 
@@ -53,5 +50,9 @@
     <mvc:view-controller path="/index.html" view-name="/index"/>
     <mvc:view-controller path="/about.html" view-name="/about/about"/>
     <mvc:view-controller path="/file.html" view-name="/file/file"/>
+    <mvc:view-controller path="/jdbc.html" view-name="/jdbc/jdbc"/>
+
+    <!-- Расположение статических ресурсов: css, js -->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
 </beans:beans>
