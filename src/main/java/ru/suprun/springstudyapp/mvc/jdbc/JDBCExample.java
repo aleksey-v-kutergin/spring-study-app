@@ -24,7 +24,7 @@ import java.util.List;
 public class JDBCExample
 {
     @Autowired
-    DataSource dataSource; // Смотрит в файле application-context.xml объявление бина с id="dataSource"
+    private DataSource dataSource; // Смотрит в файле application-context.xml объявление бина с id="dataSource"
 
     /** С помощью инстанса JdbcTemplate можно выполнять простейшие CRUD операции **/
     private JdbcTemplate jdbcTemplate;

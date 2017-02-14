@@ -33,6 +33,44 @@
         <jdbc:script location="classpath:test-data.sql"/>
     </jdbc:initialize-database>
 
+
+    <!-- JPA Persistence Context and EntityManager configuration -->
+    <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <!-- packagesToScan - расположение пакета с классами-сущностями -->
+        <beans:property name="packagesToScan" value="ru.suprun.springstudyapp.mvc.bean"/>
+
+        <!--
+                Важный момент!
+                Для корректной работы нужно  использовать ref, а не value для передачи ссылки на уже объявленные бины.
+                Почему??? Потому что value передает строку (и в результате получите исключение), а ref - передает ссылку на объект.
+         -->
+        <beans:property name="dataSource" ref="dataSource"/>
+
+        <beans:property name="jpaVendorAdapter">
+            <beans:bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <beans:property name="generateDdl" value="true"/>
+                <beans:property name="showSql" value="true"/>
+            </beans:bean>
+        </beans:property>
+
+        <beans:property name="jpaProperties">
+            <beans:props>
+                <beans:prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</beans:prop>
+                <beans:prop key="hibernate.show_sql">true</beans:prop>
+                <beans:prop key="hibernate.format_sql">false</beans:prop>
+                <beans:prop key="hibernate.hbm2ddl.auto">update</beans:prop>
+            </beans:props>
+        </beans:property>
+
+    </beans:bean>
+
+
+    <!-- Automatic Transaction Participation -->
+    <beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <beans:property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </beans:bean>
+
+
     <!-- Java mail configuration -->
     <!-- Здесь задается логин и пароль от почтого сервера (или конкретной почты) -->
     <beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
