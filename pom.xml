@@ -180,6 +180,13 @@
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
 
     <!-- Spring REST Jackson JSON Processing API -->
     <dependency>
