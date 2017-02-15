@@ -40,6 +40,9 @@
     <!-- Spring Data -->
     <spring.data.version>1.9.1.RELEASE</spring.data.version>
 
+    <!-- Quartz scheduling framework -->
+    <quartz.scheduling.version>2.2.1</quartz.scheduling.version>
+
   </properties>
 
   <!--
@@ -153,6 +156,12 @@
     </dependency>
 
 
+    <!-- Запуск задач по расписанию -->
+    <dependency>
+      <groupId>org.quartz-scheduler</groupId>
+      <artifactId>quartz</artifactId>
+      <version>${quartz.scheduling.version}</version>
+    </dependency>
 
 
     <!-- Зависимости для тестирования -->

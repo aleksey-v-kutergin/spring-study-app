@@ -4,6 +4,7 @@
              xmlns:mvc="http://www.springframework.org/schema/mvc"
              xmlns:jdbc="http://www.springframework.org/schema/jdbc"
              xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:task="http://www.springframework.org/schema/task"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc
@@ -11,7 +12,9 @@
 	   http://www.springframework.org/schema/context
 	   http://www.springframework.org/schema/context/spring-context.xsd
 	   http://www.springframework.org/schema/jdbc
-       http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+       http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
 
     <!-- Расположение файла пропертей, в котором описаны параметры подключения к БД -->
     <!-- property-placeholder указывает где нужно искать файл пропертей  -->
@@ -64,6 +67,71 @@
 
     </beans:bean>
 
+    <!-- Quartz scheduling configuration -->
+    <!-- Как обычно включаем аннотации для конфигурирования планировщика -->
+    <task:annotation-driven/>
+
+    <!-- Описание простого триггера (Quartz simple trigger) -->
+    <beans:bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <!-- 1. Описываем джоб. Точнее прописваем ссылку на джоб -->
+        <beans:property name="jobDetail" ref="simpleQuartzJob"/>
+        <!-- 2. Описываем событие по которому должна выполняться задача -->
+        <beans:property name="repeatInterval" value="3000"/>
+        <beans:property name="startDelay" value="1000"/>
+    </beans:bean>
+
+    <beans:bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <beans:property name="jobDetail" ref="quartzCronJob"/>
+        <beans:property name="cronExpression" value="0/7 * * * * ?"/>
+    </beans:bean>
+
+
+    <!-- Описываем джобы. Параметрами выступаю бин и метод в нем. -->
+
+    <!-- Quartz job -->
+    <beans:bean id="simpleQuartzJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <beans:property name="targetObject" ref="simpleQuartzTask"/>
+        <beans:property name="targetMethod" value="simpleTaskMethod"/>
+    </beans:bean>
+
+    <!-- Quartz cron jod -->
+    <beans:bean id="quartzCronJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <beans:property name="targetObject" ref="cronQuartzTask"/>
+        <beans:property name="targetMethod" value="cronTaskMethod"/>
+    </beans:bean>
+
+
+    <!-- Описываем бины для задач -->
+
+    <!-- Quartz simple task -->
+    <beans:bean id="simpleQuartzTask" class="ru.suprun.springstudyapp.mvc.quartz.QuartzTask"/>
+
+    <!-- Quartz crone task -->
+    <beans:bean id="cronQuartzTask" class="ru.suprun.springstudyapp.mvc.quartz.CronQuartzTask"/>
+
+
+    <!-- Настраиваем сам лпнировщик -->
+    <!-- В него передается список работ (задач) и триггеры по которым они должны запускаться -->
+    <!-- Quartz scheduler -->
+    <beans:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <beans:property name="jobDetails">
+            <beans:list>
+                <beans:ref bean="simpleQuartzJob"/>
+                <beans:ref bean="quartzCronJob"/>
+            </beans:list>
+        </beans:property>
+        <beans:property name="triggers">
+            <beans:list>
+                <beans:ref bean="simpleTrigger"/>
+                <beans:ref bean="cronTrigger"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <!-- ScheduleTask example. Путь для поиска бинов -->
+    <context:component-scan base-package="ru.suprun.springstudyapp.mvc.scheduling"/>
+
+    <!-- End scheduling configuration -->
 
     <!-- Automatic Transaction Participation -->
     <beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
