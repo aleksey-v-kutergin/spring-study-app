@@ -63,4 +63,14 @@
     <!-- Расположение статических ресурсов: css, js -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
+    <!-- Настрока перехватчика -->
+    <!-- В спринге перехватчик позволяет выолнять pre-, post-, after- обработку url-запроса\запросов. Типа прокси:) -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/interceptorCall/*"/>
+            <!-- Если нужно чтобы перехватчик обрабатывал все запросы, то нужно использовать маппинг /**, а не /* -->
+            <beans:bean class="ru.suprun.springstudyapp.mvc.interceptors.SiteInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans:beans>
