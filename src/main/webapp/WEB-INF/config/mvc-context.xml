@@ -39,12 +39,13 @@
     <!--
          В спринге бин XmlViewResolver используется для того чтобы найти бины-представления, описанные в xml, по их имени.
      -->
-    <beans:bean class="org.springframework.web.servlet.view.XmlViewResolver">
+    <!-- Закомментарить при выолнении тестов!!! -->
+    <!--<beans:bean class="org.springframework.web.servlet.view.XmlViewResolver">
         <beans:property name="order" value="0" />
         <beans:property name="location">
             <beans:value>/WEB-INF/config/excel-pdf-context.xml</beans:value>
         </beans:property>
-    </beans:bean>
+    </beans:bean>-->
 
     <!--
           view-controller - с помощью ресолвера представлений перенапраявляет пользователя на представление.
