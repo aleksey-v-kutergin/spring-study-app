@@ -59,6 +59,7 @@
     <mvc:view-controller path="/email.html" view-name="/email/email"/>
     <mvc:view-controller path="/orm.html" view-name="/orm/orm"/>
     <mvc:view-controller path="/errorstatus.html" view-name="/error/errorstatus"/>
+    <mvc:view-controller path="/scope.html" view-name="/scope/scope"/>
 
     <!-- Расположение статических ресурсов: css, js -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>

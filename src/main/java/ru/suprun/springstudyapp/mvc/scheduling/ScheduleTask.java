@@ -11,7 +11,7 @@ public class ScheduleTask
     @Scheduled(fixedDelay = 10000)
     public void fixedDelaySchedule()
     {
-        System.out.println("fixedDelaySchedule every 10 seconds" + new Date());
+        //System.out.println("fixedDelaySchedule every 10 seconds" + new Date());
     }
 
     // (seconds, minutes, hours, day of month, month, day of week, year)
