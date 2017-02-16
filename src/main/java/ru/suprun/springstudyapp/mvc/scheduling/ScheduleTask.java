@@ -20,6 +20,6 @@ public class ScheduleTask
     @Scheduled(cron = "0/30 * * * * ?")
     public void cronSchedule()
     {
-        System.out.println("cronSchedule every 30 seconds" + new Date());
+        //System.out.println("cronSchedule every 30 seconds" + new Date());
     }
 }

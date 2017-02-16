@@ -19,6 +19,6 @@ public class QuartzTask
     {
         // Здесь можно заломится в БД при помощи simpletasktrigger
         logger.info("Test Simple Quartz Time: " + Calendar.getInstance().getTime());
-        System.out.println("Test Simple Quartz Time: " + Calendar.getInstance().getTime());
+        //System.out.println("Test Simple Quartz Time: " + Calendar.getInstance().getTime());
     }
 }
