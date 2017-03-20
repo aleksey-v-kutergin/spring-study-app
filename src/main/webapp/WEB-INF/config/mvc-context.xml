@@ -53,16 +53,20 @@
           1. К префиксу добавится указанное имя представления: /WEB-INF/view/about/about
           2. Добавится суффикс: /WEB-INF/view/about/about.jsp
     -->
+    <mvc:view-controller path="/" view-name="/index"/>
     <mvc:view-controller path="/index.html" view-name="/index"/>
+    <mvc:view-controller path="/login.html" view-name="/form/login"/>
     <mvc:view-controller path="/about.html" view-name="/about/about"/>
     <mvc:view-controller path="/file.html" view-name="/file/file"/>
     <mvc:view-controller path="/jdbc.html" view-name="/jdbc/jdbc"/>
     <mvc:view-controller path="/email.html" view-name="/email/email"/>
+    <mvc:view-controller path="/rest.html" view-name="/rest/rest"/>
     <mvc:view-controller path="/orm.html" view-name="/orm/orm"/>
-    <mvc:view-controller path="/errorstatus.html" view-name="/error/errorstatus"/>
+    <mvc:view-controller path="/jstl.html" view-name="/jstl/jstl"/>
     <mvc:view-controller path="/scope.html" view-name="/scope/scope"/>
     <mvc:view-controller path="/cookie.html" view-name="/cookie/cookieView"/>
-
+    <mvc:view-controller path="/security.html" view-name="/security/security"/>
+    <mvc:view-controller path="/security/admin.html" view-name="/security/admin"/>
     <!-- Расположение статических ресурсов: css, js -->
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 

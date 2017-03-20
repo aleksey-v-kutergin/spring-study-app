@@ -2,6 +2,7 @@
 <%@tag description="Template Site tag" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <%@attribute name="title" fragment="true" %>
 <html>
@@ -39,6 +40,9 @@
 <c:url value="/runtimeException.html" var="runtimeException" />
 <c:url value="/jstl.html" var="jstl" />
 <c:url value="/redirectExample" var="redirectExample" />
+<c:url value="/scope.html" var="scope" />
+<c:url value="/cookie.html" var="cookieView" />
+<c:url value="/security.html" var="security" />
 
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -56,6 +60,31 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <security:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER_USER', 'ROLE_USER')" var="isUSer"/>
+
+
+                <c:if test="${not isUSer}">
+                    <li style="padding-top: 15px; padding-bottom: 15px; color: red">
+                        <c:if test="${empty param.error}">
+                            Вы не вошли в приложение
+                        </c:if>
+                    </li>
+                    <li> <a style="color: Green;" href="<c:url value="/login.html"/>">Login</a> </li>
+                </c:if>
+
+
+
+                <c:if test="${isUSer}">
+                    <li style="padding-top: 15px; padding-bottom: 15px; color: green">
+                        Вы вошли как:
+                        <security:authentication property="principal.username"/> с ролью:
+                        <b><security:authentication property="principal.authorities"/></b>
+
+                    </li>
+                    <li> <a style="color: red;" href="<c:url value="/j_spring_security_logout"/>">Logout</a> </li>
+                </c:if>
+
+
                 <c:url value="/about.html" var="about"/>
                 <li><a href="${about}">About</a></li>
                 <li class="dropdown">
@@ -84,6 +113,15 @@
                         </li>
                         <li>
                             <a href="${redirectExample}">Redirect Example</a>
+                        </li>
+                        <li>
+                            <a href="${scope}">Session Object Example</a>
+                        </li>
+                        <li>
+                            <a href="${cookieView}">Работа с cookie</a>
+                        </li>
+                        <li>
+                            <a href="${security}">Spring Security</a>
                         </li>
                     </ul>
                 </li>

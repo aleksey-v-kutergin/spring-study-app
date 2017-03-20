@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+          xmlns:beans="http://www.springframework.org/schema/beans"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:security= "http://www.springframework.org/schema/security"
+          xsi:schemaLocation="http://www.springframework.org/schema/beans
+                              http://www.springframework.org/schema/beans/spring-beans.xsd
+                              http://www.springframework.org/schema/security
+                              http://www.springframework.org/schema/security/spring-security.xsd">
+
+          <!-- 
+                auto-config="true" - автоматически регистрирует форму логина, функционал базовой аунтификации и logout сервис.
+                use-expressions="true" - делает возможным использование EL-выражений ( hasRole('ADMIN') ) в атрибутах доступа.
+          -->
+          <security:http auto-config="true" use-expressions="true">
+
+            <!--
+                  security:intercept-url - задает паттерн, по которому будет проверяться уровень доступа клиента.
+                  Пример из настроек ниже. Приложение будет предоставлять доступ с к страницам, адресс которых начинается с /user/**,
+                  только если улент имеет проль USER.
+
+                  Есди незалогинившийся пользователь попытается войти на страницу http://localhost:8080/user/,
+                  то он будет переброшен на страницу с формой авторизации.
+            -->
+            <security:intercept-url pattern="/security/**" access="hasRole('ADMIN')"/>
+            <security:intercept-url pattern="/user/**" access="hasRole('USER')"/>
+
+            <!-- security:form-login - задает настроки формы логина. -->
+            <!--
+                 Параметры username-parameter и password-parameter используются для связывания с тем что было введено
+                 в соответсвующие поля формы логина.
+
+                 login-processing-url - задает значение action у form, из которого spring security понимает что нудно
+                 проверять пользователя согласно настройкам.
+
+                 authentication-failure-url - какой url-должен сгенерироваться в случае ошибки авторизации.
+            -->
+            <security:form-login login-page="/login.html"
+                        username-parameter="j_username"
+                        password-parameter="j_password"
+                        login-processing-url="/j_spring_security_check"
+                        authentication-failure-url="/login.html?error=true" />
+
+
+            <!-- security:logout - задает куда мы должны -->
+            <security:logout logout-url="/j_spring_security_logout" logout-success-url="/"/>
+
+            <!--
+                  Создает чекбокс "Запомнить меня?".
+                  Хранит залогинившегося пользователя в куках с именем key='name'
+            -->
+            <security:remember-me key="myKey" token-validity-seconds="300"/>
+
+            <!-- Отключеие защиты от этих атак. -->
+            <security:csrf disabled="true"/>
+            
+          </security:http>
+
+          <!-- Настрока проверки пользователей через БД. -->
+          <security:jdbc-user-service id="jdbcUserService"
+                                      data-source-ref="dataSource"
+                                      users-by-username-query="SELECT USERNAME, PASSWORD, ENABLED FROM USER WHERE USERNAME=?"
+                                      authorities-by-username-query="SELECT U.USERNAME, A.AUTHORITY FROM AUTHORITIES A, USER U WHERE U.USERNAME = A.USERNAME AND U.USERNAME = ?"/>
+
+
+          <security:authentication-manager>
+            <security:authentication-provider user-service-ref="jdbcUserService"/>
+          </security:authentication-manager>
+  
+</beans:beans>
