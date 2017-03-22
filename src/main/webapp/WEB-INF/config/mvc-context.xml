@@ -16,7 +16,15 @@
     <context:component-scan base-package="ru.suprun.springstudyapp.mvc"/>
 
     <!-- Говорим спрингу что для конфигурации бинов будут использованы аннотации -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <!-- Данный бин отвечает за конвертацию сообщений -->
+            <beans:bean id="jacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <!-- prettyPrint - получение JSON-ответа в форматированном виде. -->
+                <beans:property name="prettyPrint" value="true"/>
+            </beans:bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
     <!-- Активируем анотацию @Transactional в JPA -->
     <tx:annotation-driven/>

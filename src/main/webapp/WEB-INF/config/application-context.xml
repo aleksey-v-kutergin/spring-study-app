@@ -36,11 +36,18 @@
         <jdbc:script location="classpath:test-data.sql"/>
     </jdbc:initialize-database>
 
+    <!-- Бин для доступа к данным с удаленного REST-сервиса. -->
+    <beans:bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 
     <!-- JPA Persistence Context and EntityManager configuration -->
     <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <!-- packagesToScan - расположение пакета с классами-сущностями -->
-        <beans:property name="packagesToScan" value="ru.suprun.springstudyapp.mvc.bean"/>
+        <beans:property name="packagesToScan">
+            <beans:list>
+                <beans:value>ru.suprun.springstudyapp.mvc.rest.model</beans:value>
+                <beans:value>ru.suprun.springstudyapp.mvc.bean</beans:value>
+            </beans:list>
+        </beans:property>
 
         <!--
                 Важный момент!
